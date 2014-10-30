@@ -5,11 +5,21 @@
 // that meet that css selector. Whatever we do works with entire set of elements as a group.
 // jquery also has animations that is impossible to do without.
 
+
+// 4 variales higher than click event
+// track which image was clicked on, and it's tile to compare to last one
+// clear the variable using to track first and last image
+// won game when matches ==8 or remain = 0
+// get another variable to decide when to ignore your click, boolean resetting outside click handler
+// reset to true, and then set to false. inside click handler, if the resetting is true then just return
 "use strict";
 
 var tiles = [];
 var idx;
 var tile;
+var resetting = false;
+var matched = 0;
+var missed = 0;
 
 for(idx = 1; idx <= 32; ++idx) {
     tiles.push({
@@ -20,15 +30,14 @@ for(idx = 1; idx <= 32; ++idx) {
     });
 } // for each tile
 
-console.log(tiles);
 
 // when document is ready...
 // created an array of 8 tiles out of our shuffled array of all tiles
 // and then cloned those 8 to make set of 16, for 8 matching pairs, and then reshuffled.
 $(document).ready(function() {
     var timer;
+    missed = 0;
     $('#start-game').click(function() {
-        console.log('start game button clicked!');
         tiles = _.shuffle(tiles);
         var selectedTiles = tiles.slice(0,8);
         var tilePairs = [];
@@ -37,7 +46,6 @@ $(document).ready(function() {
            tilePairs.push(_.clone(tile)); // underscore has a function to clone
         });
         tilePairs = _.shuffle(tilePairs);
-       console.log(tilePairs);
 
         var gameBoard = $('#game-board');
         gameBoard.empty(); // clears game board
@@ -60,6 +68,7 @@ $(document).ready(function() {
             }
 
             img.data('tile', tile); // jquery tracks which tile is associated with that image.
+
             row.append(img);
         });
         gameBoard.append(row);
@@ -73,46 +82,73 @@ $(document).ready(function() {
                 $('#elapsed-seconds').text(elapsedSeconds + ' seconds');
             }
 
+            if (missed == 1) {
+                $('#missed').text(missed + ' match missed');
+            } else {
+                $('#missed').text(missed + ' matches missed');
+            }
         }, 1000);
         // track last tile they clicked on jQuery image element
+
+
+
 
         var lastImg;
 
         $('#game-board img').click(function() {
-
-            //this refers to image that got clicked
-            // console.log(this.alt);
-            var clickedImg = $(this); // allows us to do clickedImg.data and use the key
-            var tile = clickedImg.data('tile'); // gives full data on the image object that's clicked ./ WHAT IS GOING ON HERE
-            if (lastImg) {
-                // on
-                // another if statement, do tiles matched? clicked = last
-                lastImg.data('tile'); // tile associated with last image, object
-                lastImg = null;
-            } else {
-                lastImg = clickedImg;
+            if (!resetting) {
+                //this refers to image that got clicked
+                var clickedImg = $(this); // allows us to do clickedImg.data and use the key
+                var tile = clickedImg.data('tile'); // gives full data on the image object that's clicked
+                if (!tile.flipped) {
+                    if (lastImg) {
+                        // on
+                        // another if statement, do tiles matched? clicked = last
+                        // lastImg.data('tile'); // tile associated with last image, object
+                        var tileLast = lastImg.data('tile');
+                        if (tile.tileNum == tileLast.tileNum) {
+                            console.log("matched");
+                            tile.matched = true;
+                            tileLast.matched = true;
+                            matched++;
+                        } else {
+                            resetting = true;
+                            setTimeout(function() {
+                                    flipTile(tile, clickedImg);
+                                    flipTile(tileLast, lastImg);
+                                    resetting = false;
+                                    lastImg = null;
+                                }, 1000
+                            );
+                            missed++;
+                        }
+                    } else {
+                        lastImg = clickedImg;
+                    }
+                    flipTile(tile, clickedImg);
+                }
             }
 
-
-
-            console.log(tile);
-            flipTile(tile, clickedImg);
         }); // one event handler for all of the imgs,
+
     }); // start game button click
 
 }); // document ready function
 
 function flipTile(tile, img) {
+    if (tile.matched && tile.flipped) {
 
-    img.fadeOut(100, function() {
-        if (tile.flipped) {
-            img.attr('src', 'img/tile-back.png');
-        } else {
-            img.attr('src', tile.src);
-            console.log('hi');
-        }
+    } else {
+        img.fadeOut(100, function() {
+            if (tile.flipped) {
+                img.attr('src', 'img/tile-back.png');
+            } else {
+                img.attr('src', tile.src);
+            }
 
-        tile.flipped = !tile.flipped; // makes it so the tile isn't flipped
-        img.fadeIn(100);
-    });
+            tile.flipped = !tile.flipped; // makes it so the tile isn't flipped
+            img.fadeIn(100);
+        });
+    }
+
 }
