@@ -38,6 +38,8 @@ $(document).ready(function() {
     var timer;
     missed = 0;
     $('#start-game').click(function() {
+        $('#win-screen').attr('display', 'none');
+        matched = 0;
         tiles = _.shuffle(tiles);
         var selectedTiles = tiles.slice(0,8);
         var tilePairs = [];
@@ -77,15 +79,26 @@ $(document).ready(function() {
             var elapsedSeconds = (Date.now() - startTime) /1000; // number of seconds btwn when started and when it's called
             elapsedSeconds = Math.floor(elapsedSeconds);
             if (elapsedSeconds == 1) {
-                $('#elapsed-seconds').text(elapsedSeconds + ' second');
+                $('.elapsed-seconds').text(elapsedSeconds + ' second');
             } else {
-                $('#elapsed-seconds').text(elapsedSeconds + ' seconds');
+                $('.elapsed-seconds').text(elapsedSeconds + ' seconds');
             }
 
             if (missed == 1) {
-                $('#missed').text(missed + ' match missed');
+                $('.missed').text(missed + ' match missed');
             } else {
-                $('#missed').text(missed + ' matches missed');
+                $('.missed').text(missed + ' matches missed');
+            }
+
+            if (matched == 1) {
+                $('.matched').text(matched + ' match made');
+            } else {
+                $('.matched').text(matched + ' matches made');
+            }
+
+            if (matched == 8) {
+                elapsedSeconds == (Date.now() - startTime);
+                $('#win-screen').css('display', 'block'); // display win thing
             }
         }, 1000);
         // track last tile they clicked on jQuery image element
@@ -110,6 +123,7 @@ $(document).ready(function() {
                             console.log("matched");
                             tile.matched = true;
                             tileLast.matched = true;
+                            lastImg = null;
                             matched++;
                         } else {
                             resetting = true;
@@ -132,7 +146,6 @@ $(document).ready(function() {
         }); // one event handler for all of the imgs,
 
     }); // start game button click
-
 }); // document ready function
 
 function flipTile(tile, img) {

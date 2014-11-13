@@ -1,14 +1,42 @@
 #game-board img {
-    width: 25%;
-    height: 25%;
+    width: 15%;
+    height: 15%;
     padding: 5px;
     box-sizing: border-box; /* when I say 25%, calculate that based on size of image and padding */
 }
 
-#elapsed-seconds {
+.elapsed-seconds, .missed {
     margin-right: 150px
 }
+#container {
+    position: relative;
+}
 
-#missed {
+#win-screen {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(102, 102, 102, .5);
+    display:none;
+    overflow-y: scroll;
+}
 
+h1 {
+    text-align: center;
+}
+
+#winner {
+    height: 300px;
+    width: 400px;
+    background-color: white;
+    border: 1px solid black;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -165px;
+    margin-left: -215px;
+    padding: 15px;
+    text-align: center;
 }

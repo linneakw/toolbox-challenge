@@ -10,10 +10,19 @@
     <h1>Memory!</h1>
     <p><button id="start-game">Start New Game</button></p>
 
-    <p>elapsed time: <span id="elapsed-seconds"></span>
-    missed tiles: <span id="missed"></span></p>
+    <p>elapsed time: <span class="elapsed-seconds"></span>
+    missed tiles: <span class="missed"></span>
+    matched tiles: <span class="matched"></span></p>
     <div id="game-board"></div>
-
+    <div id="container">
+        <div id="win-screen">
+            <div id="winner">
+                <h1>You've won!</h1>
+                It took you <span class="missed"></span> </br>
+                and <span class="elapsed-seconds"></span>
+            </div>
+        </div>
+    </div>
     <!-- option + enter to download the library, parse it, and understand all variables to syntax color and
         code complete -->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
