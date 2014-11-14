@@ -5,28 +5,47 @@
         <title>Memory Game</title>
         <link rel="stylesheet" href="css/main.css"/>
     </head>
+    <audio id="start-sound" preload="audio">
+        <source src="music/startding.wav" type="audio/wav">
+    </audio>
+    <audio id="match-sound" preload="audio">
+        <source src="music/match.mp3" type="audio/mp3">
+    </audio>
+    <audio id="win-sound" preload="audio">
+        <source src="music/win.mp3" type="audio/mp3">
+    </audio>
     <body>
-
-    <h1>Memory!</h1>
-    <p><button id="start-game">Start New Game</button></p>
-
-    <p>elapsed time: <span class="elapsed-seconds"></span>
-    missed tiles: <span class="missed"></span>
-    matched tiles: <span class="matched"></span></p>
-    <div id="game-board"></div>
-    <div id="container">
-        <div id="win-screen">
-            <div id="winner">
-                <h1>You've won!</h1>
-                It took you <span class="missed"></span> </br>
-                and <span class="elapsed-seconds"></span>
+        <img src="img/memorytitle.png" class="title">
+        <table>
+            <th>GAME STATS</th>
+            <tr>
+                <td>elapsed time: <span class="elapsed-seconds"></span></td>
+            </tr>
+            <tr>
+                <td>missed tiles: <span class="missed"></span></td>
+            </tr>
+            <tr>
+                <td>matched tiles: <span class="matched"></span></td>
+            </tr>
+            <tr>
+                <td class="start"><button class="start-game">Start New Game</button></td>
+            </tr>
+        </table>
+        <div id="game-board"></div>
+        <div id="container">
+            <div id="win-screen">
+                <div id="winner">
+                    <h1>You've won!</h1>
+                    It took you <span class="missed"></span> </br>
+                    and <span class="elapsed-seconds"></span>
+                    <p><button class="start-game">Start New Game</button></p>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- option + enter to download the library, parse it, and understand all variables to syntax color and
-        code complete -->
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-    <script src="js/app.js"></script>
+        <!-- option + enter to download the library, parse it, and understand all variables to syntax color and
+            code complete -->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+        <script src="js/app.js"></script>
     </body>
 </html>

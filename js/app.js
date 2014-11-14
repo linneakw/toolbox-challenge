@@ -35,11 +35,15 @@ for(idx = 1; idx <= 32; ++idx) {
 // created an array of 8 tiles out of our shuffled array of all tiles
 // and then cloned those 8 to make set of 16, for 8 matching pairs, and then reshuffled.
 $(document).ready(function() {
+    $(window).resize(setHeight());
     var timer;
-    missed = 0;
-    $('#start-game').click(function() {
-        $('#win-screen').attr('display', 'none');
+    $('.start-game').click(function() {
+        $('#win-screen').css('display', 'none');
+        var startSound = document.getElementById('start-sound');
+        startSound.load();
+        startSound.play();
         matched = 0;
+        missed = 0;
         tiles = _.shuffle(tiles);
         var selectedTiles = tiles.slice(0,8);
         var tilePairs = [];
@@ -97,7 +101,10 @@ $(document).ready(function() {
             }
 
             if (matched == 8) {
-                elapsedSeconds == (Date.now() - startTime);
+                var winSound = document.getElementById('win-sound');
+                winSound.load();
+                winSound.play();
+                clearInterval(timer);
                 $('#win-screen').css('display', 'block'); // display win thing
             }
         }, 1000);
@@ -120,7 +127,9 @@ $(document).ready(function() {
                         // lastImg.data('tile'); // tile associated with last image, object
                         var tileLast = lastImg.data('tile');
                         if (tile.tileNum == tileLast.tileNum) {
-                            console.log("matched");
+                            var matchSound = document.getElementById('match-sound');
+                            matchSound.load();
+                            matchSound.play();
                             tile.matched = true;
                             tileLast.matched = true;
                             lastImg = null;
@@ -164,4 +173,13 @@ function flipTile(tile, img) {
         });
     }
 
+}
+
+function setHeight() {
+    var winWidth = $(window).width();
+    var winHeight = $(window).height();
+    var gameImg = $('#game-board').find('img');
+    var titleHeight = $('.title').height();
+    gameImg.css('height', winHeight/2 - titleHeight);
+    gameImg.css('width', winHeight/2 - titleHeight);
 }
